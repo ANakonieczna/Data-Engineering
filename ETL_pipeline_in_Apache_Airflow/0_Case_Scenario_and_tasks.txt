@@ -1,0 +1,3 @@
+
+SCENARIO:
+Write an ETL pipeline that analyzes the web server log file accesslog.txt, extracts the ipaddress from it, transforms the data by filtering out all the occurrences of the ipaddress 198.46.149.143 and loads, i.e., archives the final file into a tar file. Put the pipeline into the Airflow DAG file.

@@ -1,0 +1,36 @@
+
+SCENARIO:
+You are a data engineer at an e-commerce company. Your company needs you to design a data platform that uses MongoDB as a NoSQL database. 
+You will be using MongoDB to store and query the e-commerce catalog data.
+
+
+
+(Actions performed on the MongoDB server, unless stated otherwise.)
+
+Task 1. Import catalog.json into mongodb server into a database named 'catalog' and a collection named 'electronics'
+terminal:   >mongoimport -u root -p *************** --authenticationDatabase admin --db catalog --collection electronics --file catalog.json
+
+Task 2. List out all the databases
+>show dbs
+
+Task 3. List out all the collections in the database catalog
+>use catalog
+>show collections
+
+Task 4. Create an index on the field 'type'
+>db.electronics.createIndex({"type":1})
+
+Task 5. Write a query to find the count of laptops
+>db.electronics.countDocuments({"type":"laptop"})
+
+Task 6. Write a query to find the number of smart phones with screen size of 6 inches
+>db.electronics.countDocuments({"type":"smart phone","screen size":6})
+
+Task 7. Write a query to find out the average screen size of smart phones.
+>db.electronics.aggregate([{ 
+    $match: {"type":"smart phone"}}, 
+    { $group: {"_id":null, "avg":{$avg:"$screen size"}}
+    }])
+
+Task 8. Export the fields '_id', 'type', 'model' from the 'electronics' collection into a file named electronics.csv
+terminal:   >mongoexport -u root -p *************** --authenticationDatabase admin --db catalog --collection electronics --out electronics.csv --type=csv --fields _id,type,model

@@ -1,0 +1,43 @@
+from airflow import DAG
+from airflow.utils.dates import days_ago
+import datetime as dt
+from airflow.operators.bash_operator import BashOperator
+
+dag_args = {
+    'owner': 'capstone_dag_owner',
+    'start_date': days_ago(0),
+    'email': ['capstone_dag_owner@host.com'],
+    'email_on_failure': True,
+    'email_on_retry': True,
+    'retries': 1,
+    'retry_dalay': dt.timedelta(minutes=5),
+}
+
+dag = DAG(dag_id = 'process_web_log',
+          schedule_interval = dt.timedelta(days=1),
+          default_args = dag_args,
+          description = 'Capstone Project DAG',
+)
+
+extract_data = BashOperator(
+    task_id = 'extract_data',
+    bash_command = 'cut -d" " -f1 /home/project/airflow/dags/capstone/accesslog.txt \
+	                > /home/project/airflow/dags/capstone/extracted_data.txt',
+    dag = dag,
+)
+
+transform_data = BashOperator(
+    task_id = 'transform_data',
+    bash_command = 'grep -v "198.46.149.143" /home/project/airflow/dags/capstone/extracted_data.txt \
+	                > /home/project/airflow/dags/capstone/transformed_data.txt',
+    dag = dag,
+)
+
+load_data = BashOperator(
+    task_id = 'load_data',
+    bash_command = 'tar -cvf /home/project/airflow/dags/capstone/weblog.tar \
+	                /home/project/airflow/dags/capstone/transformed_data.txt',
+    dag = dag,
+)
+
+extract_data >> transform_data >> load_data

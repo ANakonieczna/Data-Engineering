@@ -1,0 +1,37 @@
+
+SCENARIO:
+You are a data engineer hired by an e-commerce company named SoftCart.com. The company retails download only items like E-Books, Movies, Songs etc. The company has international presence and customers from all over the world. The company would like to create a data warehouse so that it can create reports like
+    total sales per year per country,
+    total sales per month per category,
+    total sales per quarter per country,
+    total sales per category per country.
+You will design and implement a data warehouse for the company. You will generate reports out of the data in the data warehouse.
+
+
+
+Task 1. The e-commerce company SoftCart.com has provied you the sample data in the file ecom-sample-data.png. Using the ERD design tool design a star schema (dimension and fact tables along with relationships amongst them) for the data warehouse named softcart
+
+Task 2. Create the schema SQL from the ERD tool
+
+
+
+
+SCENARIO:
+You have designed the schema for the data warehouse. Data engineering is a team game. Your senior data engineer reviewed your design. Your schema design was improvised to suit the production needs of the company. In this assignment you will generate reports out of the data in the data warehouse.
+
+
+
+(Actions performed in pgAdmin.)
+
+Task 3. Create the following tables: DimDate, DimCategory, DimCountry, FactSales in a new database Test1 using the schema SQL from the file CREATE_SCRIPT.sql provided by the senior data engineer
+
+Task 4. Load data into the dimension tables DimDate, DimCategory, DimCountry and the fact table FactSale from the .csv files
+
+Task 5. Create a grouping sets query using the columns country, category and totalsales
+
+Task 6. Create a rollup query using the columns year, country and totalsales
+
+Task 7. Create a cube query using the columns year, country and average sales
+
+Task 8. Create an MQT named total_sales_per_country that has the columns country and total_sales
+

@@ -1,0 +1,54 @@
+
+SCENARIO:
+You are a data engineer at an e-commerce company. You need to keep data synchronized between different databases/data warehouses as a part of your daily routine. One task that is routinely performed is the sync up of staging data warehouse and production data warehouse. Automating this sync up will save you a lot of time and standardize your process. You will set up the staging and production warehouses. You will perform the incremental data load from MySQL server which acts as a staging warehouse to the PostgreSQL which is a production data warehouse. The outcoming script will be scheduled by the data engineers to sync up the data between the staging and production data warehouses.
+
+
+
+(Actions performed in the terminal, unless stated otherwise.)
+
+Step 1: Start MySQL server
+>start_mysql
+
+Step 2: Create a database named 'sales'
+MySQL CLI:  >CREATE DATABASE sales;
+            >exit
+
+Step 3: Import the data from the file sales.sql into the sales MySQL staging warehouse 'sales'
+(the file sales.sql contains structure and data for the table 'sales_data')
+>mysql --host=127.0.0.1 --port=3306 --user=root --password=*************** sales < sales.sql
+
+Step 4: Install the required MySQL connector python module and check the performance of the mysqlconnect.py Python program
+(the mysqlconnect.py contains a sample code to connect to MySQL using Python)
+>python3 -m pip install mysql-connector-python==8.0.31
+>python3 mysqlconnect.py
+
+Step 5: Install the required PostgreSQL connector python module and check the performance of the postgresqlconnect.py Python program
+(the file postgresqlconnect.py contains a sample code to connect to the PostgreSQL data warehouse using Python)
+>python3 -m pip install psycopg2
+>python3 postgresqlconnect.py
+
+Step 6: In the PostgreSQL data warehouse create a table called 'sales_data' 
+using the columns 'rowid', 'product_id', 'customer_id', 'price', 'quantity' and 'timestamp'
+pgAdmin screenshot
+
+Step 7: Load data from the sales.csv file into the table 'sales_data' on the PostgreSQL database
+pgAdmin screenshot
+
+
+EXERCISE: Automate loading of incremental data into the data warehouse
+
+One of the routine tasks that is carried out around a data warehouse is the extraction of daily new data from the operational database 
+and loading it into the data warehouse. You will automate the extraction of incremental data and loading it into the data warehouse.
+
+The solution to the exercise is placed in the file automation.py.
+
+Task 1. Implement the function get_last_rowid()
+This function must connect to the PostgreSQL as the data warehouse and return the last_rowid
+
+Task 2. Implement the function get_latest_records()
+This function must connect to the MySQL database and return all records with rowid greater than the last_rowid from Task 1
+
+Task 3. Implement the function insert_records()
+This function must connect to the PostgreSQL data warehouse and insert all the given records from Task 2
+*** Due to the structures of the MySQL and PostgreSQL data warehouses, 
+the NOT NULL constraint of the 'price' and 'timestamp' columns of the latter must have been dropped
